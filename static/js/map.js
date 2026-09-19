@@ -169,19 +169,21 @@ document.addEventListener('DOMContentLoaded', function () {
     // 都道府県ごとの件数集計
     // -------------------------
 
+    const prefectureToggleBtn = document.getElementById('prefectureToggleBtn');
+    const prefecturePanel = document.getElementById('prefecturePanel');
+
+    if (prefectureToggleBtn && prefecturePanel) {
+        prefectureToggleBtn.addEventListener('click', () => {
+            prefecturePanel.hidden = !prefecturePanel.hidden;
+        });
+    }
+
     function renderPrefectureSummary(items) {
         const counts = {};
         items.forEach(item => {
             const pref = item.prefecture || '不明';
             counts[pref] = (counts[pref] || 0) + 1;
         });
-    
-    const prefectureToggleBtn = document.getElementById('prefectureToggleBtn');
-    const prefecturePanel = document.getElementById('prefecturePanel');
-
-    prefectureToggleBtn.addEventListener('click', () => {
-        prefecturePanel.hidden = !prefecturePanel.hidden;
-    });
 
         const summaryEl = document.getElementById('prefectureSummary');
         summaryEl.innerHTML = '';
@@ -214,8 +216,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // マーカーの表示/非表示はここでは行わず、nearbyIds を更新して updateMarkerVisibility に任せる
     function runNearbySearch(userLat, userLng) {
         const radius = Number(nearbySelect.value);
-        const selectedTypes = getSelectedTypes();  
+        const selectedTypes = getSelectedTypes(); // 今チェックされている種類
 
+        // 現在地マーカーを作り直す
         if (userMarker) {
             map.removeLayer(userMarker);
         }
@@ -231,6 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const nearbyItems = [];
         trashItems.forEach(item => {
             const dist = distanceMeters(userLat, userLng, item.latitude, item.longitude);
+            // 距離の条件 AND 種別フィルタの条件
             if (dist <= radius && matchesTypeFilter(item, selectedTypes)) {
                 nearbyItems.push({ item, dist });
             }
@@ -246,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        // 表示/非表示の判定は updateMarkerVisibility に一本化する
         nearbyIds = new Set(nearbyItems.map(entry => entry.item.id));
         updateMarkerVisibility();
 
@@ -331,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    let pickMarker = null;  
+    let pickMarker = null;  // クリック地点の仮マーカー。1つを使い回す
 
     function buildAddUrl(lat, lng) {
         const params = new URLSearchParams({ lat: lat.toFixed(6), lng: lng.toFixed(6) });
@@ -349,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     map.on('contextmenu', function (event) {
-        event.originalEvent.preventDefault(); 
+        event.originalEvent.preventDefault(); // ブラウザ標準の右クリックメニューを出さない
         const { lat, lng } = event.latlng;
         if (pickMarker === null) {
             pickMarker = L.marker([lat, lng], { draggable: true, opacity: 0.75, zIndexOffset: 1000 }).addTo(map);
