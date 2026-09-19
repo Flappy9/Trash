@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block links %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <style>
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1;
+            min-height: 0;
+        }
+        #map {
+            height: 100%;
+        }
+    </style>
+    <style>
+        .map-wrapper { position: relative; }
+        .button-style {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 9999;
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block header_menu %}
+   <button type="button" class="hamburger-btn" id="hamburgerBtn"
+            aria-label="表示するゴミの種類を選ぶ" aria-expanded="false" aria-controls="hamburgerMenu">
+        <span></span><span></span><span></span>
+    </button>
+    <nav class="hamburger-menu" id="hamburgerMenu" hidden>
+        {# submit させないフォーム。change イベントを map.js が拾ってピンの表示を切り替える #}
+        <form id="typeFilterForm" class="type-filter" onsubmit="return false;">
+            <p class="type-filter-title">表示するゴミの種類</p>
+            {% for key, label in garbage_types %}
+            <label class="type-filter-item">
+                <input type="checkbox" name="type" value="{{ key }}" checked>
+                <span class="type-swatch" data-type="{{ key }}"></span>
+                {{ label }}
+            </label>
+            {% endfor %}
+            <div class="type-filter-actions">
+                <button type="button" id="typeFilterAllBtn">すべて</button>
+                <button type="button" id="typeFilterNoneBtn">解除</button>
+            </div>
+            <p class="type-filter-status" id="typeFilterStatus"></p>
+        </form>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div id="map"
+        data-api-url="{{ url_for('api_trashcans') }}"
+        data-add-url="{{ url_for('add_page')}}"
+        data-focus-id="{{ request.args.get('focus', '') }}"></div>
+
+    <div class="map-controls">
+        <button type="button" id="nearbySearchBtn">現在地から探す</button>
+        <select id="nearbySelect">
+            <option value="500">500m</option>
+            <option value="1000" selected>1km</option>
+            <option value="3000">3km</option>
+        </select>
+        <button type="button" id="nearbyClearBtn">クリア</button>
+        <p id="nearbyStatus" class="nearby-status"></p>
+    </div>
+    <p class="add-trash">地図を長押し（パソコンでは右クリック）でゴミ箱を登録</p>
+    <button type="button" id="prefectureToggleBtn" class="prefecture-toggle-btn">ゴミ箱の数</button>
+    <ul id="nearbyList" class="nearby-list"></ul>
+
+    <div class="map-legend" aria-label="ゴミの種類の凡例">
+        <ul>
+            {% for key, label in garbage_types %}
+            <li><span class="type-swatch" data-type="{{ key }}"></span>{{ label }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="prefecture-panel" id="prefecturePanel" hidden>
+        <h3>都道府県別の件数</h3>
+        <ul id="prefectureSummary"></ul>
+    </div>
+    <a href="{{url_for('add_page')}}" class="button-style">ゴミ箱を登録</a>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}

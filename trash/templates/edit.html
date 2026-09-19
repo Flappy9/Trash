@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}ゴミ箱を編集{% endblock %}
+
+{% block links %}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="add-form-wrapper">
+        <h1>ゴミ箱を編集</h1>
+        {% if item.photo_filename %}
+        <p>
+            現在の写真:<br>
+            <img src="{{ url_for('static', filename='uploads/' + item.photo_filename) }}" alt="{{ item.name }}" width="200">
+        </p>
+        {% endif %}
+        <form action="{{ url_for('edit_page', trash_id=item.id) }}" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {% include "_garbage_form_fields.html" %}
+            <p>{{ form.submit(value="更新する") }}</p>
+        </form>
+
+        <form action="{{ url_for('delete_page', trash_id=item.id) }}" method="POST"
+            onsubmit="return confirm('本当に削除しますか？この操作は取り消せません。');">
+            <button type="submit" class="delete-btn">削除する</button>
+        </form>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,37 @@
+<p>
+    {{ form.name.label }}<br>
+    {{ form.name(size=32) }}
+    <br><span class="field-hint">嘘はつかないでください</span>
+    {% for e in form.name.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.address.label }}<br>
+    {{ form.address(size=32) }}
+    {% for e in form.address.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.latitude.label }}<br>
+    {{ form.latitude(size=32) }}
+    {% for e in form.latitude.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<p>
+    {{ form.longitude.label }}<br>
+    {{ form.longitude(size=32) }}
+    {% for e in form.longitude.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>
+<fieldset>
+    <legend>{{ form.type.label.text }}</legend>
+    <ul class="type-checkbox-list">
+        {% for subfield in form.type %}
+        <li>
+            <label>{{ subfield(required=false) }} {{ subfield.label.text }}</label>
+        </li>
+        {% endfor %}
+    </ul>
+    {% for e in form.type.errors %}<span class="error">{{ e }}</span>{% endfor %}
+</fieldset>
+<p>
+    {{ form.photo.label }}<br>
+    {{ form.photo() }}
+    {% for e in form.photo.errors %}<br><span class="error">{{ e }}</span>{% endfor %}
+</p>

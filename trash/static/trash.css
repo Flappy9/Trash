@@ -1,0 +1,347 @@
+.leaflet-marker-icon {
+    filter: hue-rotate(360deg) saturate(3);
+}
+
+/* ゴミの種類ごとに色分けするピン（L.divIcon で描画。色は map.js の TYPE_COLORS で指定） */
+.marker-pin {
+    width: 22px;
+    height: 22px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+}
+
+/* クラスターの丸を、標準よりひとまわり小さくする */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+    background-color: rgba(46, 125, 50, 0.4);
+}
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+    width: 28px !important;
+    height: 28px !important;
+    line-height: 28px !important;
+    margin-left: 1px !important;
+    margin-top: 1px !important;
+    background-color: rgba(46, 125, 50, 0.7);
+    color: #fff;
+    font-size: 12px;
+}
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+    width: 30px !important;
+    height: 30px !important;
+}
+
+:root {
+    --header-height: clamp(48px, 10vh, 88px);
+}
+
+body { margin: 0; font-family: sans-serif; }
+
+.site-header{
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    background-color: rgb(92, 92, 199);
+}
+
+.site-nav{
+    display:flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.site-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 1;
+    padding: 8px 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+header.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 16px;
+    background-color: #2f5233;
+    color: #fff;
+    box-sizing: border-box;
+    position: relative;
+}
+header.site-header .site-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+header.site-header .header-right {
+    display: flex;
+    align-items: center;
+}
+header.site-header nav.main-nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 16px;
+}
+header.site-header nav.main-nav a:hover {
+    text-decoration: underline;
+}
+
+/* ハンバーガーボタンとメニュー枠の見た目は共通部品として base.html に残す */
+.hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 32px;
+    height: 32px;
+    margin-left: auto;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.hamburger-btn span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+}
+.hamburger-menu {
+    position: absolute;
+    top: 100%;
+    right: 16px;
+    min-width: 180px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+}
+
+/* ハンバーガーメニュー内の種別フィルタ */
+.type-filter {
+    margin: 0;
+    padding: 8px 16px;
+}
+.type-filter-title {
+    margin: 0 0 8px;
+    font-weight: bold;
+}
+.type-filter-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    white-space: nowrap;
+}
+
+.type-filter-item .type-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.type-filter-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+.type-filter-status {
+    margin: 8px 0 0;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.map-legend {
+    position: fixed;
+    left: 8px;
+    bottom: 24px;
+    z-index: 1000;
+    padding: 8px 12px;
+    background-color: #fff;
+    color: #333;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    font-size: 0.8rem;
+}
+.map-legend ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.map-legend li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0;
+}
+.map-legend .type-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.prefecture-panel {
+    position: fixed;
+    top: 100px;      
+    right: 8px;
+    z-index: 999;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 10px 14px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    font-size: 0.85rem;
+}
+
+.prefecture-panel h3 {
+    margin: 0 0 6px;
+    font-size: 0.9rem;
+}
+.prefecture-panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.prefecture-panel li {
+    padding: 2px 0;
+}
+
+.prefecture-toggle-btn {
+    position: fixed;
+    top: 58px;
+    right: 8px;
+    z-index: 999;
+    padding: 6px 12px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.map-controls {
+    position: fixed;
+    bottom: 10px;
+    left: 160px;
+    z-index: 9999;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.map-controls button {
+    cursor: pointer;
+}
+
+.nearby-status {
+    margin: 0;
+    font-size: 0.85em;
+    color: #333;
+}
+
+.add-trash {
+    position: fixed;
+    top: 135px;
+    left: 8px;
+    z-index: 999;
+    margin: 0;
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: #555;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.nearby-list {
+    position: fixed;
+    bottom: 60px;
+    left: 160px;
+    z-index: 9998;
+    background: white;
+    max-width: 300px;
+    max-height: 40vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 4px 0;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    list-style: none;
+}
+
+.nearby-list li {
+    padding: 6px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.nearby-list li:hover {
+    background: #f0f8ff;
+}
+
+.nearby-list:empty {
+    display: none;
+}
+
+.field-hint {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+fieldset {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.type-checkbox-list {
+    margin: 0;
+    padding-left: 20px;
+    text-align: left;
+}
+.type-checkbox-list li {
+    padding: 2px 0;
+    text-align: left;
+}
+
+.delete-btn {
+    margin-top: 16px;
+    padding: 10px 20px;
+    background-color: #eb2e2e;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.delete-btn:hover {
+    background-color: #a92626;
+}
