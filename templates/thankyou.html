@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}ゴミ箱を追加{% endblock %}
+{% block links %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='thankyou.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="thankyou-container">
+        <div class="thankyou-card">
+            <div class="thankyou-icon">♻️ ✔ 🎉</div>
+            <h2>ゴミ箱を登録しました！</h2>
+            <p>ご協力ありがとうございます。</p>
+            <a href="/" class="thankyou-btn">地図に戻る</a>
+        </div>
+    </div>
+{% endblock %}

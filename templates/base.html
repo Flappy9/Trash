@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Trash Can Map{% endblock %}</title>
+    {% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='trash.css') }}">
+    {% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="{{url_for('map_page')}}">トップページ　ー　地図</a>
+
+            {% block header_menu %}{% endblock %}
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+</body>
+</html>
